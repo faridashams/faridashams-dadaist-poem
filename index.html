@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>To Make a Dadaist Poem</title>
+
+    <meta
+      name="description"
+      content="An example of Tristan Tzara's To Make a Dadaist Poem."
+    />
+    <!-- styles -->
+    <style>
+      #poem {
+        padding: 10px;
+        border: 3px solid #000;
+      }
+      .controls {
+        padding: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>To Make a Dadaist Poem</h1>
+    <ol>
+      <li>Take a newspaper.</li>
+      <li>Take a pair of scissors.</li>
+      <li>Choose an article as long as you are planning to make your poem.</li>
+      <li>Cut out the article.</li>
+      <li>
+        Then cut out each of the words that make up this article and put them in
+        a bag.
+      </li>
+      <li>Shake it gently.</li>
+      <li>
+        Then take out the scraps one after the other in the order in which they
+        left the bag.
+      </li>
+      <li>Copy conscientiously.</li>
+      <li>The poem will be like you.</li>
+      <li>
+        And here are you a writer, infinitely original and endowed with a
+        sensibility that is charming though beyond the understanding of the
+        vulgar.
+      </li>
+    </ol>
+    <cite>Tristan Tzara</cite>
+
+    <div class="controls">
+      <button id="new-poem">New poem</button>
+    </div>
+    <div id="poem"></div>
+    <!-- script -->
+    <script>
+      const article = `One of the many pieces of advice I got after her passing was that ‘it gets easier with time.’ It’s a phrase you hear all the time from all sorts of people who want to lend a comforting hand but don’t know how. But the night I found out my grandmother passed away, my aunt held my hand and led me outside away from the grieving eyes. I looked at her, sombre eyed, and she clutched me close to her chest, whispering ‘there will come a time where you’ll laugh when you hear her name instead of cry.’
+
+I suppose she was right; it did get easier as the years went by. Still, what nobody tells you that with grief, the world goes on and you’re stuck in a loop, reliving the day they died. Nobody tells you how difficult it is to get used to your new normal. How in the first couple of months after her death, I would stumble on her name — my tongue faster than my brain — and ask about her whenever my grandfather came to visit. 
+
+My grandparents were always a pair, to me they were Teta and Gedo, never just Gedo. 
+
+Nobody tells you that even your dog could sense her absence. Sniffing around my grandfather’s legs to look for my grandmother, and whining when she is nowhere to be seen.
+
+What will never get easier is the way my grandfather talks about her. He still wears his wedding band, twisting it whenever we bring her up in conversation.
+”.`;
+      const button = document.getElementById("new-poem");
+      function shuffleWords(list) {
+        return list
+          .map((value) => ({ value, sort: Math.random() }))
+          .sort((a, b) => a.sort - b.sort)
+          .map(({ value }) => value);
+      }
+      function clearText() {
+        const poem = document.getElementById("poem");
+        poem.innerHTML = "";
+      }
+      function addLine(line) {
+        const poem = document.getElementById("poem");
+        const poemLine = document.createElement("div");
+        const lineText = document.createTextNode(line);
+        poemLine.appendChild(lineText);
+        poem.appendChild(poemLine);
+      }
+      function assemblePoem(articleWords) {
+        let lineText = "";
+        for (const [counter, word] of articleWords.entries()) {
+          if ((counter + 1) % 5 == 0) {
+            addLine(lineText);
+            lineText = "";
+          } else {
+            if (lineText === "") {
+              lineText = word;
+            } else {
+              lineText = lineText + " " + word;
+            }
+          }
+        }
+        if (lineText !== "") {
+          addLine(lineText);
+        }
+      }
+      function newPoem() {
+        const cutUpArticle = article.split(" ");
+        const shuffledWords = shuffleWords(cutUpArticle);
+        clearText();
+        assemblePoem(shuffledWords);
+      }
+      newPoem();
+      button.addEventListener("click", newPoem);
+    </script>
+    <!-- include the Glitch button to show what the webpage is about and
+          to make it easier for folks to view source and remix -->
+    <div
+      class="glitchButton"
+      style="position: fixed; top: 20px; right: 20px"
+    ></div>
+    <script src="https://button.glitch.me/button.js" defer></script>
+  </body>
+</html>
